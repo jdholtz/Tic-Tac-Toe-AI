@@ -2,6 +2,7 @@ package screen.panels;
 
 
 import game.Game;
+import players.Player;
 import src.Constants;
 
 import java.awt.Color;
@@ -12,12 +13,12 @@ import java.awt.Graphics;
 public class GamePanel extends Panel {
     private final Game game;
 
-    GamePanel() {
+    GamePanel(boolean AIOpponent) {
         this.setPreferredSize(new Dimension(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
         this.setLayout(null);
 
-        this.game = new Game();
+        this.game = new Game(AIOpponent);
         this.addMouseListener(this.game);
     }
 
@@ -25,7 +26,7 @@ public class GamePanel extends Panel {
     protected void paintComponent(Graphics g) {
         g.setColor(Color.WHITE);
         super.paintComponent(g);
-        this.game.draw(g);
+        this.game.run(g);
         this.drawPlayerInformation(g);
         this.repaint();
         this.revalidate(); // Needed to redraw every frame
@@ -45,22 +46,17 @@ public class GamePanel extends Panel {
         int posX = (Constants.SCREEN_WIDTH - Constants.CELL_WIDTH * 3) / 4;
         int posY = (Constants.SCREEN_HEIGHT - Constants.CELL_WIDTH * 3) / 2;
 
-        // Set the player's text color to green if it is their turn
-        Color color1 = Color.GREEN;
-        Color color2 = Color.WHITE;
-        if (this.game.getTurns() % 2 == 1) {
-            color1 = Color.WHITE;
-            color2 = Color.GREEN;
-        }
+        Player player1 = this.game.getPlayer(0);
+        Color color1 = player1.hasMoved() ? Color.WHITE : Color.GREEN;
 
-        // Player 1
         g.setColor(color1);
-        int[] pos1 = this.getCenteredTextPosition(posX, posY, "Player 1", g);
-        this.drawString(posX, posY, "Player 1", g);
+        this.drawString(posX, posY, player1.getName(), g);
 
-        // Player 2
+        Player player2 = this.game.getPlayer(1);
+        Color color2 = player2.hasMoved() ? Color.WHITE : Color.GREEN;
+
         g.setColor(color2);
-        this.drawString(Constants.SCREEN_WIDTH - posX, posY, "Player 2", g);
+        this.drawString(Constants.SCREEN_WIDTH - posX, posY, player2.getName(), g);
     }
 
     private void drawBoardResult(Graphics g) {

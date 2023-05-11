@@ -36,7 +36,7 @@ public class Cell {
 
     public void drawSymbol(Graphics g) {
         if (symbol == 0) return;
-        String symbolString = symbol == 1 ? "X" : "O";
+        String symbolString = symbol == 1 ? "O" : "X";
 
         // Offset the symbol a little to center it in the cell better
         int offset = 5;

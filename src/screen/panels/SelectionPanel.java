@@ -32,9 +32,9 @@ public class SelectionPanel extends Panel {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource() == this.playerButton) {
-            this.screen.setPanel(new GamePanel());
+            this.screen.setPanel(new GamePanel(false));
         } else if (actionEvent.getSource() == this.playerAIButton) {
-            System.out.println("Player vs. AI button clicked");
+            this.screen.setPanel(new GamePanel(true));
         } else if (actionEvent.getSource() == this.trainingButton) {
             System.out.println("Train AI button clicked");
         } else {

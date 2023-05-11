@@ -43,7 +43,7 @@ public class NeuralNetwork {
         return weights;
     }
 
-    private double[] predict(double[] inputs) {
+    public double[] predict(double[] inputs) {
         double[] hiddenLayer1Outputs = new double[this.hiddenLayer1.length];
         for (int i = 0; i < this.hiddenLayer1.length; i++) {
             double output = this.hiddenLayer1[i].compute(inputs);
