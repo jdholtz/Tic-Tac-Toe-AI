@@ -24,6 +24,10 @@ public class Board {
         }
     }
 
+    public int getTurns() {
+        return this.turns;
+    }
+
     public void draw(Graphics g) {
         int fontSize = Constants.CELL_WIDTH - Constants.BOARD_OUTLINE_WIDTH * 2;
         g.setFont(new Font("SansSerif", Font.PLAIN, fontSize));

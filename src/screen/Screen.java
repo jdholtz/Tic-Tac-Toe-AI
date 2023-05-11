@@ -5,8 +5,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Screen {
-    private JFrame mainScreen;
-    private JPanel panel;
+    private final JFrame mainScreen;
+    private final JPanel panel;
 
     public Screen () {
         this.mainScreen = new JFrame("Tic-Tac-Toe");

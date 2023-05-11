@@ -30,6 +30,8 @@ public class GamePanel extends JPanel implements MouseListener {
         g.setColor(Color.WHITE);
         super.paintComponent(g);
         this.drawPlayerInformation(g);
+
+        g.setColor(Color.WHITE);
         this.board.draw(g);
         this.repaint();
         this.revalidate(); // Needed to redraw every frame
@@ -45,11 +47,21 @@ public class GamePanel extends JPanel implements MouseListener {
         int posX = (Constants.SCREEN_WIDTH - Constants.CELL_WIDTH * 3) / 4;
         int posY = (Constants.SCREEN_HEIGHT - Constants.CELL_WIDTH * 3) / 2;
 
+        // Set the player's text color to green if it is their turn
+        Color color1 = Color.GREEN;
+        Color color2 = Color.WHITE;
+        if (this.board.getTurns() % 2 == 1) {
+            color1 = Color.WHITE;
+            color2 = Color.GREEN;
+        }
+
         // Player 1
+        g.setColor(color1);
         int[] pos1 = this.getCenteredTextPosition(posX, posY, "Player 1", g);
         g.drawString("Player 1", pos1[0], pos1[1]);
 
         // Player 2
+        g.setColor(color2);
         int[] pos2 = this.getCenteredTextPosition(Constants.SCREEN_WIDTH - posX, posY, "Player 2", g);
         g.drawString("Player 2", pos2[0], pos2[1]);
     }
