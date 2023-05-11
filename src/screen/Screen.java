@@ -1,6 +1,8 @@
 package screen;
 
 
+import screen.panels.SelectionPanel;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -14,7 +16,7 @@ public class Screen {
         this.mainScreen.setResizable(false);
         this.mainScreen.setFocusable(true);
 
-        this.panel = new GamePanel();
+        this.panel = new SelectionPanel();
         this.mainScreen.add(this.panel);
         this.mainScreen.pack();
         this.mainScreen.setLocationRelativeTo(null);

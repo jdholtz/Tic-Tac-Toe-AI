@@ -2,6 +2,9 @@ package screen;
 
 
 import game.Board;
+import game.Game;
+import players.AI;
+import players.Actor;
 import src.Constants;
 
 import javax.swing.JPanel;
@@ -10,19 +13,20 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
-public class GamePanel extends JPanel implements MouseListener {
-    private final Board board;
+public class GamePanel extends JPanel {
+    private final Game game;
 
     GamePanel() {
         this.setPreferredSize(new Dimension(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
         this.setLayout(null);
-        this.addMouseListener(this);
 
-        this.board = new Board();
+        this.game = new Game();
+
+        // Only listen to one player. This avoids processing two mouse clicks
+        // at the same time
+//        this.addMouseListener(this.players[0]);
     }
 
     @Override
@@ -94,22 +98,4 @@ public class GamePanel extends JPanel implements MouseListener {
 
         return new int[]{x, y};
     }
-
-    @Override
-    public void mouseClicked(MouseEvent mouseEvent) {
-        this.board.processMouseClick(mouseEvent.getX(), mouseEvent.getY());
-    }
-
-    // These functions are here to satisfy the MouseListener interface
-    @Override
-    public void mousePressed(MouseEvent mouseEvent) {}
-
-    @Override
-    public void mouseReleased(MouseEvent mouseEvent) {}
-
-    @Override
-    public void mouseEntered(MouseEvent mouseEvent) {}
-
-    @Override
-    public void mouseExited(MouseEvent mouseEvent) {}
 }
