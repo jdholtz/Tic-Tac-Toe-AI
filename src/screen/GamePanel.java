@@ -29,10 +29,8 @@ public class GamePanel extends JPanel implements MouseListener {
     protected void paintComponent(Graphics g) {
         g.setColor(Color.WHITE);
         super.paintComponent(g);
-        this.drawPlayerInformation(g);
-
-        g.setColor(Color.WHITE);
         this.board.draw(g);
+        this.drawPlayerInformation(g);
         this.repaint();
         this.revalidate(); // Needed to redraw every frame
     }
@@ -40,6 +38,10 @@ public class GamePanel extends JPanel implements MouseListener {
     private void drawPlayerInformation(Graphics g) {
         // Don't draw if the screen is too short
         if (Constants.SCREEN_WIDTH <= 1000) return;
+
+        if (this.board.getResult() != -1) {
+            this.drawBoardResult(g);
+        }
 
         int fontSize = Constants.SCREEN_WIDTH / 20;
         g.setFont(new Font("SansSerif", Font.PLAIN, fontSize));
@@ -66,10 +68,29 @@ public class GamePanel extends JPanel implements MouseListener {
         g.drawString("Player 2", pos2[0], pos2[1]);
     }
 
+    private void drawBoardResult(Graphics g) {
+        g.setColor(Color.GREEN);
+        int fontSize = Constants.SCREEN_WIDTH / 15;
+        g.setFont(new Font("SansSerif", Font.PLAIN, fontSize));
+
+        int posX = Constants.SCREEN_WIDTH / 2;
+        int posY = Constants.SCREEN_HEIGHT / 2 - Constants.CELL_WIDTH * 2;
+
+        if (this.board.getResult() == 0) {
+            // Tie
+            int[] pos = this.getCenteredTextPosition(posX, posY, "Tie", g);
+            g.drawString("Tie", pos[0], pos[1]);
+        } else {
+            String player = this.board.getTurns() % 2 == 1 ? "Player 1" : "Player 2";
+            int[] pos = this.getCenteredTextPosition(posX, posY, player + " wins!", g);
+            g.drawString(player + " wins!", pos[0], pos[1]);
+        }
+    }
+
     private int[] getCenteredTextPosition(int x, int y, String text, Graphics g) {
         FontMetrics fontMetrics = g.getFontMetrics();
         x -= (fontMetrics.stringWidth(text) / 2);
-        y += fontMetrics.getAscent() - fontMetrics.getHeight();
+        y += fontMetrics.getAscent() - (fontMetrics.getHeight() / 2);
 
         return new int[]{x, y};
     }

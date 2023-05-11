@@ -9,6 +9,8 @@ import java.awt.Graphics;
 public class Board {
     private final Cell[] cells = new Cell[3 * 3];
     private int turns;
+    // -1 indicates the game is still going. 0 indicates a tie. 1 indicates a win
+    private int result = -1;
 
     public Board() {
         this.initializeCells();
@@ -26,6 +28,10 @@ public class Board {
 
     public int getTurns() {
         return this.turns;
+    }
+
+    public int getResult() {
+        return this.result;
     }
 
     public void draw(Graphics g) {
@@ -56,6 +62,11 @@ public class Board {
     }
 
     public void processMouseClick(int mouseX, int mouseY) {
+        // Make sure the game is still being played
+        if (this.result != -1) {
+            return;
+        }
+
         // Check if the mouse intersects with any of the cells
         for (Cell cell: this.cells) {
             if (mouseX > cell.getX() + Constants.BOARD_OUTLINE_WIDTH && mouseX < cell.getX() + Constants.CELL_WIDTH &&
@@ -73,7 +84,7 @@ public class Board {
         int symbol = (int) Math.pow(-1, this.turns);
         cell.setSymbol(symbol);
 
-        int result = this.checkBoard();
+        this.result = this.checkBoard();
     }
 
     private int checkBoard() {

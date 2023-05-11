@@ -43,10 +43,10 @@ public class Cell {
         FontMetrics fontMetrics = g.getFontMetrics();
 
         int posX = this.x + Constants.CELL_WIDTH / 2 + Constants.BOARD_OUTLINE_WIDTH / 2 - offset;
-        int posY = this.y + Constants.CELL_WIDTH + Constants.BOARD_OUTLINE_WIDTH / 2 + offset;
+        int posY = this.y + Constants.CELL_WIDTH / 2 + Constants.BOARD_OUTLINE_WIDTH / 2 + offset;
         // Center the text based on the font
         posX -= (fontMetrics.stringWidth(symbolString) / 2);
-        posY += fontMetrics.getAscent() - fontMetrics.getHeight();
+        posY += fontMetrics.getAscent() - (fontMetrics.getHeight() / 2);
 
         g.drawString(symbolString, posX, posY);
     }
