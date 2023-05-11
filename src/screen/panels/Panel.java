@@ -1,5 +1,7 @@
 package screen.panels;
 
+import src.Constants;
+
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,7 +13,7 @@ import java.awt.event.ActionListener;
 
 public class Panel extends JPanel implements ActionListener {
     Panel() {
-        this.setPreferredSize(new Dimension(src.Constants.SCREEN_WIDTH, src.Constants.SCREEN_HEIGHT));
+        this.setPreferredSize(new Dimension(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
         this.setLayout(null);
     }
@@ -24,10 +26,10 @@ public class Panel extends JPanel implements ActionListener {
 
     private void drawTitle(Graphics g) {
         g.setFont(new Font("TimesRoman", Font.BOLD, 96));
-        g.setColor(Color.GREEN);
+        g.setColor(Color.ORANGE);
 
-        int x = src.Constants.SCREEN_WIDTH / 2;
-        int y = src.Constants.SCREEN_HEIGHT / 2 - src.Constants.CELL_WIDTH * 2;
+        int x = Constants.SCREEN_WIDTH / 2;
+        int y = Constants.SCREEN_HEIGHT / 2 - Constants.CELL_WIDTH * 2;
         this.drawString(x, y, "Tic-Tac-Toe AI", g);
     }
 

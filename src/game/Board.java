@@ -8,9 +8,6 @@ import java.awt.Graphics;
 
 public class Board {
     private final Cell[] cells = new Cell[3 * 3];
-    private int turns;
-    // -1 indicates the game is still going. 0 indicates a tie. 1 indicates a win
-    private int result = -1;
 
     public Board() {
         this.initializeCells();
@@ -26,12 +23,8 @@ public class Board {
         }
     }
 
-    public int getTurns() {
-        return this.turns;
-    }
-
-    public int getResult() {
-        return this.result;
+    public Cell[] getCells() {
+        return this.cells;
     }
 
     public void draw(Graphics g) {
@@ -61,33 +54,7 @@ public class Board {
         }
     }
 
-    public void processMouseClick(int mouseX, int mouseY) {
-        // Make sure the game is still being played
-        if (this.result != -1) {
-            return;
-        }
-
-        // Check if the mouse intersects with any of the cells
-        for (Cell cell: this.cells) {
-            if (mouseX > cell.getX() + Constants.BOARD_OUTLINE_WIDTH && mouseX < cell.getX() + Constants.CELL_WIDTH &&
-                mouseY > cell.getY() + Constants.BOARD_OUTLINE_WIDTH && mouseY < cell.getY() + Constants.CELL_WIDTH) {
-                this.takeTurn(cell);
-                break;
-            }
-        }
-    }
-
-    private void takeTurn(Cell cell) {
-        this.turns++;
-
-        // Alternate X's and O's
-        int symbol = (int) Math.pow(-1, this.turns);
-        cell.setSymbol(symbol);
-
-        this.result = this.checkBoard();
-    }
-
-    private int checkBoard() {
+    public int check() {
         // First, check if someone has won
         int result = checkWin();
 
@@ -108,22 +75,22 @@ public class Board {
     }
 
     private int checkWin() {
-        return this.checkColumns() || this.checkRows() || this.checkDiagonals() ? 1 : -1;
+        return this.checkColumnWins() || this.checkRowWins() || this.checkDiagonalWins() ? 1 : -1;
     }
 
-    private boolean checkColumns() {
-        return check(0, 3) || check(1, 3) || check(2, 3);
+    private boolean checkColumnWins() {
+        return checkWins(0, 3) || checkWins(1, 3) || checkWins(2, 3);
     }
 
-    private boolean checkRows() {
-        return check(0, 1) || check(3, 1) || check(6, 1);
+    private boolean checkRowWins() {
+        return checkWins(0, 1) || checkWins(3, 1) || checkWins(6, 1);
     }
 
-    private boolean checkDiagonals() {
-        return check(0, 4) || check(2, 2);
+    private boolean checkDiagonalWins() {
+        return checkWins(0, 4) || checkWins(2, 2);
     }
 
-    private boolean check(int startIndex, int step) {
+    private boolean checkWins(int startIndex, int step) {
         Cell cell1 = this.cells[startIndex];
         Cell cell2 = this.cells[startIndex + step];
         Cell cell3 = this.cells[startIndex + 2 * step];
