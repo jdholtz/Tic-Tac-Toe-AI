@@ -1,4 +1,4 @@
-package players;
+package src.players;
 
 
 public class Player {

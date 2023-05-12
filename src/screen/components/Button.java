@@ -1,4 +1,4 @@
-package screen.components;
+package src.screen.components;
 
 import javax.swing.JButton;
 import java.awt.Font;

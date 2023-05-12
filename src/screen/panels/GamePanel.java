@@ -1,8 +1,8 @@
-package screen.panels;
+package src.screen.panels;
 
 
-import game.Game;
-import players.Player;
+import src.game.Game;
+import src.players.Player;
 import src.Constants;
 
 import java.awt.Color;

@@ -1,7 +1,7 @@
-package screen.panels;
+package src.screen.panels;
 
-import screen.Screen;
-import screen.components.Button;
+import src.screen.Screen;
+import src.screen.components.Button;
 import src.Constants;
 
 import java.awt.event.ActionEvent;

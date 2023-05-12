@@ -1,8 +1,8 @@
-package screen;
+package src.screen;
 
 
-import screen.panels.Panel;
-import screen.panels.SelectionPanel;
+import src.screen.panels.Panel;
+import src.screen.panels.SelectionPanel;
 
 import javax.swing.JFrame;
 

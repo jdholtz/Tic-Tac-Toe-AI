@@ -1,9 +1,9 @@
-package players;
+package src.players;
 
 
-import game.Cell;
-import game.Game;
-import neural_network.NeuralNetwork;
+import src.game.Cell;
+import src.game.Game;
+import src.neural_network.NeuralNetwork;
 
 public class AI extends Player {
     private final Game game;

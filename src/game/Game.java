@@ -1,7 +1,7 @@
-package game;
+package src.game;
 
-import players.AI;
-import players.Player;
+import src.players.AI;
+import src.players.Player;
 
 import java.awt.Color;
 import java.awt.Graphics;

@@ -1,4 +1,4 @@
-package screen.panels;
+package src.screen.panels;
 
 import src.Constants;
 
