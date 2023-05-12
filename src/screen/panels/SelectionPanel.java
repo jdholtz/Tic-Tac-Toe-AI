@@ -7,11 +7,11 @@ import src.Constants;
 import java.awt.event.ActionEvent;
 
 public class SelectionPanel extends Panel {
-    private Screen screen;
+    private final Screen screen;
 
-    private Button playerButton;
-    private Button playerAIButton;
-    private Button trainingButton;
+    private final Button playerButton;
+    private final Button playerAIButton;
+    private final Button trainingButton;
 
     public SelectionPanel(Screen screen) {
         this.screen = screen;

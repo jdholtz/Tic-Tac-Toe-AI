@@ -71,7 +71,9 @@ public class GamePanel extends Panel {
             // Tie
             this.drawString(posX, posY, "Tie", g);
         } else {
-            String player = this.game.getTurns() % 2 == 1 ? "Player 1" : "Player 2";
+            Player player1 = this.game.getPlayer(0);
+            Player player2 = this.game.getPlayer(1);
+            String player = player1.hasMoved() ? player1.getName() : player2.getName();
             this.drawString(posX, posY, player + " wins!", g);
         }
     }

@@ -20,7 +20,7 @@ public class AI extends Player {
     public void move() {
         double[] inputs = this.getInputs();
         double[] outputs = this.network.predict(inputs);
-        int move = this.getBestOutput(outputs);
+        int move = this.getBestValidMove(outputs);
         this.game.processAIMove(move);
     }
 
@@ -35,6 +35,16 @@ public class AI extends Player {
         }
 
         return inputs;
+    }
+
+    private int getBestValidMove(double[] outputs) {
+        int bestOutput = this.getBestOutput(outputs);
+        while (this.game.getCells()[bestOutput].getSymbol() != 0) {
+            outputs[bestOutput] = -1;
+            bestOutput = this.getBestOutput(outputs);
+        }
+
+        return bestOutput;
     }
 
     /**

@@ -44,6 +44,7 @@ public class Game implements MouseListener {
         for (Player player : this.players) {
             if (player instanceof AI ai && !player.hasMoved()) {
                 ai.move();
+                break;
             }
         }
     }
@@ -79,7 +80,7 @@ public class Game implements MouseListener {
 
     public void processMouseClick(int mouseX, int mouseY) {
         // Make sure the game is still being played
-        if (this.result != -1) {
+        if (this.hasEnded()) {
             return;
         }
 
@@ -96,6 +97,7 @@ public class Game implements MouseListener {
     }
 
     private void takeTurn(Cell cell) {
+        if (this.hasEnded()) return;
         this.turns++;
 
         // Alternate X's and O's
