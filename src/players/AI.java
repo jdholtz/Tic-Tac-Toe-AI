@@ -22,7 +22,6 @@ public class AI extends Player {
         double[] outputs = this.network.predict(inputs);
         int move = this.getBestOutput(outputs);
         this.game.processAIMove(move);
-
     }
 
     private double[] getInputs() {

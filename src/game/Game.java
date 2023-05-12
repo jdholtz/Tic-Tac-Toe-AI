@@ -22,7 +22,7 @@ public class Game implements MouseListener {
             // Generate a random number 0 or 1
             int randIndex = (int) Math.round(Math.random());
             int AISymbol = randIndex == 0 ? 1 : -1;
-            this.players[randIndex] = new AI(this, AISymbol, "AI " + randIndex + 1);
+            this.players[randIndex] = new AI(this, AISymbol, "AI " + (randIndex + 1));
             this.players[1 - randIndex] = new Player("Player " + (2 - randIndex));
         } else {
             this.players[0] = new Player("Player 1");
@@ -39,6 +39,8 @@ public class Game implements MouseListener {
     }
 
     private void triggerAIMove() {
+        if (this.hasEnded()) return;
+
         for (Player player : this.players) {
             if (player instanceof AI ai && !player.hasMoved()) {
                 ai.move();
@@ -71,8 +73,8 @@ public class Game implements MouseListener {
         return this.result != -1;
     }
 
-    public void processAIMove(int cellNum) {
-        this.takeTurn(this.board.getCells()[cellNum]);
+    public void processAIMove(int cellLocation) {
+        this.takeTurn(this.board.getCells()[cellLocation]);
     }
 
     public void processMouseClick(int mouseX, int mouseY) {
@@ -84,9 +86,9 @@ public class Game implements MouseListener {
         // Check if the mouse intersects with any of the cells
         for (Cell cell : this.board.getCells()) {
             if (mouseX > cell.getX() + src.Constants.BOARD_OUTLINE_WIDTH &&
-                mouseX < cell.getX() + src.Constants.CELL_WIDTH &&
-                mouseY > cell.getY() + src.Constants.BOARD_OUTLINE_WIDTH &&
-                mouseY < cell.getY() + src.Constants.CELL_WIDTH) {
+                    mouseX < cell.getX() + src.Constants.CELL_WIDTH &&
+                    mouseY > cell.getY() + src.Constants.BOARD_OUTLINE_WIDTH &&
+                    mouseY < cell.getY() + src.Constants.CELL_WIDTH) {
                 this.takeTurn(cell);
                 break;
             }
