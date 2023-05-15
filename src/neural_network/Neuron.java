@@ -1,17 +1,12 @@
 package src.neural_network;
 
-import java.util.Random;
-
 public class Neuron {
     private final double[] weights;
     private final double bias;
 
-    public Neuron(double[] weights) {
+    public Neuron(double[] weights, double bias) {
         this.weights = weights;
-
-        // Initialize the bias randomly from -1 to 1
-        Random random = new Random();
-        this.bias = random.nextDouble(-1, 1);
+        this.bias = bias;
     }
 
     public double compute(double[] inputs) {

@@ -2,24 +2,30 @@ package src.players;
 
 
 import src.Constants;
+import src.WeightsUtils;
 import src.game.Cell;
 import src.game.Game;
 import src.neural_network.NeuralNetwork;
 
 public class AI extends Player {
+    public double[][][] weights;
+    public double[][] bias;
+
     protected Game game;
 
     private final NeuralNetwork network;
     private int losses;
 
     public AI() {
-        this(null, "Default AI");
+        this(null, "Default AI", WeightsUtils.getRandomWeights(), WeightsUtils.getRandomBias());
     }
 
-    public AI(Game game, String name) {
+    public AI(Game game, String name, double[][][] weights, double[][] bias) {
         super(name);
         this.game = game;
-        this.network = new NeuralNetwork();
+        this.weights = weights;
+        this.bias = bias;
+        this.network = new NeuralNetwork(weights, bias);
     }
 
     public void move() {

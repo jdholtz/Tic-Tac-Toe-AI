@@ -21,7 +21,6 @@ public class RandomPlayer extends AI {
             }
         }
 
-        System.out.println(validMoves);
         Random rand = new Random();
         return validMoves.get(rand.nextInt(validMoves.size()));
     }
