@@ -17,7 +17,7 @@ public class NeuralNetwork {
     private void initializeLayers() {
         // Hidden layers
         for (int i = 0; i < this.hiddenLayer1.length; i++) {
-            double[] weights = this.getRandomWeights(9);
+            double[] weights = this.getRandomWeights(27);
             this.hiddenLayer1[i] = new Neuron(weights);
         }
 
@@ -46,20 +46,17 @@ public class NeuralNetwork {
     public double[] predict(double[] inputs) {
         double[] hiddenLayer1Outputs = new double[this.hiddenLayer1.length];
         for (int i = 0; i < this.hiddenLayer1.length; i++) {
-            double output = this.hiddenLayer1[i].compute(inputs);
-            hiddenLayer1Outputs[i] = output;
+            hiddenLayer1Outputs[i] = this.hiddenLayer1[i].compute(inputs);
         }
 
         double[] hiddenLayer2Outputs = new double[this.hiddenLayer2.length];
         for (int i = 0; i < this.hiddenLayer2.length; i++) {
-            double output = this.hiddenLayer2[i].compute(hiddenLayer1Outputs);
-            hiddenLayer2Outputs[i] = output;
+            hiddenLayer2Outputs[i] = this.hiddenLayer2[i].compute(hiddenLayer1Outputs);
         }
 
         double[] outputLayerOutputs = new double[this.outputLayer.length];
         for (int i = 0; i < this.outputLayer.length; i++) {
-            double output = this.outputLayer[i].compute(hiddenLayer2Outputs);
-            outputLayerOutputs[i] = output;
+            outputLayerOutputs[i] = this.outputLayer[i].compute(hiddenLayer2Outputs);
         }
 
         return outputLayerOutputs;

@@ -1,19 +1,24 @@
 package src.players;
 
 
+import src.Constants;
 import src.game.Cell;
 import src.game.Game;
 import src.neural_network.NeuralNetwork;
 
 public class AI extends Player {
-    private final Game game;
-    private final int currentSymbol;
-    private final NeuralNetwork network;
+    protected Game game;
 
-    public AI(Game game, int currentSymbol, String name) {
+    private final NeuralNetwork network;
+    private int losses;
+
+    public AI() {
+        this(null, "Default AI");
+    }
+
+    public AI(Game game, String name) {
         super(name);
         this.game = game;
-        this.currentSymbol = currentSymbol;
         this.network = new NeuralNetwork();
     }
 
@@ -26,12 +31,13 @@ public class AI extends Player {
 
     private double[] getInputs() {
         Cell[] cells = this.game.getCells();
-        double[] inputs = new double[cells.length];
-        for (int i = 0; i < inputs.length; i++) {
+        double[] inputs = new double[cells.length * 3];
+        for (int i = 0; i < cells.length; i++) {
             int symbol = cells[i].getSymbol();
-            // This expression converts the symbol (O: -1, X: 1, nothing: 0) to
-            // 1: The AI's symbol, 0: No symbol, -1: The opponent's symbol
-            inputs[i] = symbol * this.currentSymbol;
+            // 1 is X, -1 is O, 0 is empty
+            inputs[i] = symbol == 1 ? 1 : 0;
+            inputs[i + 9] = symbol == -1 ? 1 : 0;
+            inputs[i + 18] = symbol == 0 ? 1 : 0;
         }
 
         return inputs;
@@ -59,5 +65,17 @@ public class AI extends Player {
             }
         }
         return max;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public void incrementLosses() {
+        this.losses++;
+    }
+
+    public double getFitness() {
+        return (Constants.GAMES_PER_SET - this.losses) / (double) Constants.GAMES_PER_SET;
     }
 }

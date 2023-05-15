@@ -18,6 +18,10 @@ public class Player {
     }
 
     public void changeMove() {
-        this.moved = !this.moved;
+        this.setMoved(!this.moved);
+    }
+
+    public void setMoved(boolean moved) {
+        this.moved = moved;
     }
 }

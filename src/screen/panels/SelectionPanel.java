@@ -36,7 +36,7 @@ public class SelectionPanel extends Panel {
         } else if (actionEvent.getSource() == this.playerAIButton) {
             this.screen.setPanel(new GamePanel(true));
         } else if (actionEvent.getSource() == this.trainingButton) {
-            System.out.println("Train AI button clicked");
+            this.screen.setPanel(new TrainingPanel());
         } else {
             System.out.println("Unknown actionEvent. Skipping...");
         }

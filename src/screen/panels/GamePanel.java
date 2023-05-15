@@ -26,7 +26,8 @@ public class GamePanel extends Panel {
     protected void paintComponent(Graphics g) {
         g.setColor(Color.WHITE);
         super.paintComponent(g);
-        this.game.run(g);
+        this.game.run();
+        this.game.draw(g);
         this.drawPlayerInformation(g);
         this.repaint();
         this.revalidate(); // Needed to redraw every frame

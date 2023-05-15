@@ -9,21 +9,24 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class Game implements MouseListener {
+    protected Player[] players = new Player[2];
+    // -1 indicates the game is still going. 0 indicates a tie. 1 indicates a win
+    protected int result = -1;
+
     private final Board board;
-    private final Player[] players = new Player[2];
     private int turns;
 
-    // -1 indicates the game is still going. 0 indicates a tie. 1 indicates a win
-    private int result = -1;
+    public Game() {
+        this.board = new Board();
+    }
 
     public Game(boolean AIOpponent) {
-        this.board = new Board();
+        this();
         if (AIOpponent) {
             // Generate a random number 0 or 1
             int randIndex = (int) Math.round(Math.random());
-            int AISymbol = randIndex == 0 ? 1 : -1;
-            this.players[randIndex] = new AI(this, AISymbol, "AI " + (randIndex + 1));
-            this.players[1 - randIndex] = new Player("Player " + (2 - randIndex));
+            this.players[randIndex] = new AI(this, "AI 1");
+            this.players[1 - randIndex] = new Player("Player 1");
         } else {
             this.players[0] = new Player("Player 1");
             this.players[1] = new Player("Player 2");
@@ -33,14 +36,13 @@ public class Game implements MouseListener {
         this.players[1].changeMove();
     }
 
-    public void run(Graphics g) {
+    public void run() {
+        if (this.hasEnded()) return;
+
         this.triggerAIMove();
-        this.draw(g);
     }
 
     private void triggerAIMove() {
-        if (this.hasEnded()) return;
-
         for (Player player : this.players) {
             if (player instanceof AI ai && !player.hasMoved()) {
                 ai.move();
@@ -49,7 +51,7 @@ public class Game implements MouseListener {
         }
     }
 
-    private void draw(Graphics g) {
+    public void draw(Graphics g) {
         g.setColor(Color.WHITE);
         this.board.draw(g);
     }
@@ -97,11 +99,11 @@ public class Game implements MouseListener {
     }
 
     private void takeTurn(Cell cell) {
-        if (this.hasEnded()) return;
+        if (this.hasEnded() || cell.getSymbol() != 0) return;
         this.turns++;
 
         // Alternate X's and O's
-        int symbol = (int) Math.pow(-1, this.turns);
+        int symbol = (int) Math.pow(-1, this.turns - 1);
         cell.setSymbol(symbol);
 
         this.result = this.board.check();
