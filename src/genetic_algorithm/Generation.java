@@ -63,8 +63,8 @@ public class Generation {
     }
 
     private AI crossover(AI[] parents) {
-        double[][][] weights = new double[3][][];
-        double[][] bias = new double[3][];
+        double[][][] weights = new double[2][][];
+        double[][] bias = new double[2][];
         for (int i = 0; i < weights.length; i++) {
             int layerSize = parents[0].weights[i].length;
             weights[i] = this.selectLayerWeights(parents, i, layerSize);

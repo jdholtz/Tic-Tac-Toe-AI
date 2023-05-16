@@ -10,11 +10,10 @@ public class Constants {
 
     // Values for the neural network
     public final static int HIDDEN_LAYER_1_SIZE = 18;
-    public final static int HIDDEN_LAYER_2_SIZE = 18;
 
     // Values for training
     public static final int POPULATION = 1000; // Can be a minimum of 2
     public static final int GAMES_PER_SET = 100;
     public static final double CROSSOVER_RATE = 0.1;
-    public static final double MUTATION_RATE = 0.05;
+    public static double MUTATION_RATE = 0.2;
 }
