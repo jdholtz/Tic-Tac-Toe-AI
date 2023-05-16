@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class RandomPlayer extends AI {
+    public RandomPlayer() {
+        super();
+        this.name = "Random Player";
+    }
+
     public void move() {
         int randMove = this.getRandomMove();
         this.game.processAIMove(randMove);

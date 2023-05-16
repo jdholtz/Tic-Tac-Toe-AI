@@ -8,10 +8,12 @@ import java.util.Random;
 
 public class Generation {
     private final AI[] population;
+    private final int generationNum;
     private double totalFitness;
     private int crossoverParent = 0;
 
-    public Generation(AI[] population) {
+    public Generation(AI[] population, int generationNum) {
+        this.generationNum = generationNum;
         this.population = population;
         this.calculateFitness();
     }
@@ -27,8 +29,15 @@ public class Generation {
                 ai1 = ai;
             }
         }
-        System.out.println("Best fitness: " + ai1.getFitness());
-        System.out.println("Average fitness: " + this.totalFitness / this.population.length);
+
+        if (generationNum % 10 == 0) {
+            System.out.println("\nGeneration " + this.generationNum);
+            System.out.println("Best fitness: " + ai1.getFitness());
+            System.out.println("Average fitness: " + this.totalFitness / this.population.length);
+
+            // Save the weights of the best AI
+            WeightsUtils.saveWeights(ai1.weights, ai1.bias);
+        }
     }
 
     public AI[] getNewPopulation() {

@@ -2,8 +2,9 @@ package src.players;
 
 
 public class Player {
+    protected String name;
+
     private boolean moved;
-    private final String name;
 
     public Player(String name) {
         this.name = name;

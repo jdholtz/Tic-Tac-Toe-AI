@@ -21,7 +21,7 @@ public class AI extends Player {
     }
 
     public AI(double[][][] weights, double[][] bias) {
-        this(null, "DefaultAI", weights, bias);
+        this(null, "Default AI", weights, bias);
     }
 
     public AI(Game game, String name, double[][][] weights, double[][] bias) {

@@ -1,9 +1,12 @@
 package src.game;
 
 import src.Constants;
+import src.WeightsUtils;
 import src.genetic_algorithm.Generation;
 import src.players.AI;
 import src.players.RandomPlayer;
+
+import java.util.ArrayList;
 
 public class TrainingSimulator {
     private int generationNum = 1;
@@ -18,8 +21,11 @@ public class TrainingSimulator {
     }
 
     private void initializePopulation() {
+        ArrayList<Object> weightsAndBiases = WeightsUtils.loadWeights();
+        double[][][] weights = (double[][][]) weightsAndBiases.get(0);
+        double[][] bias = (double[][]) weightsAndBiases.get(1);
         for (int i = 0; i < this.population.length; i++) {
-            this.population[i] = new AI();
+            this.population[i] = new AI(weights, bias);
         }
 
     }
@@ -48,10 +54,10 @@ public class TrainingSimulator {
     }
 
     public void endGeneration() {
-        this.generationNum++;
         this.setNewMutationRate();
-        Generation generation = new Generation(this.population);
+        Generation generation = new Generation(this.population, this.generationNum);
         this.population = generation.getNewPopulation();
+        this.generationNum++;
         this.initializeSets();
     }
 

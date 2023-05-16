@@ -1,5 +1,6 @@
 package src.game;
 
+import src.WeightsUtils;
 import src.players.AI;
 import src.players.Player;
 
@@ -7,6 +8,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 public class Game implements MouseListener {
     protected Player[] players = new Player[2];
@@ -25,7 +27,13 @@ public class Game implements MouseListener {
         if (AIOpponent) {
             // Generate a random number 0 or 1
             int randIndex = (int) Math.round(Math.random());
-            this.players[randIndex] = new AI(this, "AI 1");
+            ArrayList<Object> weightsAndBias = WeightsUtils.loadWeights();
+
+            // Unpack the weights and biases from the ArrayList
+            double[][][] weights = (double[][][]) weightsAndBias.get(0);
+            double[][] bias = (double[][]) weightsAndBias.get(1);
+
+            this.players[randIndex] = new AI(this, "AI 1", weights, bias);
             this.players[1 - randIndex] = new Player("Player 1");
         } else {
             this.players[0] = new Player("Player 1");

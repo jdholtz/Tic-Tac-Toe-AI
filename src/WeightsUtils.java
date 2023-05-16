@@ -1,5 +1,12 @@
 package src;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class WeightsUtils {
@@ -55,5 +62,46 @@ public class WeightsUtils {
         }
 
         return weights;
+    }
+
+    public static void saveWeights(double[][][] weights, double[][] bias) {
+        try {
+            FileOutputStream fileStream = new FileOutputStream("bestWeights.csv");
+            ObjectOutputStream stream = new ObjectOutputStream(fileStream);
+
+            stream.writeObject(weights);
+            stream.writeObject(bias);
+
+            stream.close();
+            fileStream.close();
+        } catch (IOException e) {
+            System.out.println("Error saving weights");
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<Object> loadWeights() {
+        double[][][] weights = null;
+        double[][] bias = null;
+        try {
+            FileInputStream fileStream = new FileInputStream("bestWeights.csv");
+            ObjectInputStream stream = new ObjectInputStream(fileStream);
+            weights = (double[][][]) stream.readObject();
+            bias = (double[][]) stream.readObject();
+        } catch (FileNotFoundException e) {
+            System.out.println("No best weights file found. Using new weights and biases");
+            weights = WeightsUtils.getRandomWeights();
+            bias = WeightsUtils.getRandomBias();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error loading weights");
+            e.printStackTrace();
+        }
+
+        // Pack the weights and bias in an ArrayList to return both of them
+        ArrayList<Object> weightsAndBias = new ArrayList<>();
+        weightsAndBias.add(weights);
+        weightsAndBias.add(bias);
+
+        return weightsAndBias;
     }
 }
