@@ -8,57 +8,76 @@ import java.util.Random;
 
 public class Generation {
     private final AI[] population;
-    private AI[] bestParents;
+    private double totalFitness;
     private int crossoverParent = 0;
 
     public Generation(AI[] population) {
         this.population = population;
-        this.selectParents();
+        this.calculateFitness();
     }
 
-    private void selectParents() {
-        AI parent1 = this.population[0];
-        AI parent2 = this.population[1];
+    private void calculateFitness() {
+        AI ai1 = this.population[0];
 
-        for (AI currentAI : this.population) {
-            if (currentAI.getFitness() > parent1.getFitness()) {
-                parent2 = parent1;
-                parent1 = currentAI;
-            } else if (currentAI.getFitness() > parent2.getFitness()) {
-                parent2 = currentAI;
+        for (AI ai : this.population) {
+            this.totalFitness += ai.getFitness();
+
+            // Calculate the best fitness for the generation
+            if (ai.getFitness() > ai1.getFitness()) {
+                ai1 = ai;
             }
         }
-
-        System.out.println("Best fitness: " + parent1.getFitness());
-        System.out.println("Second best fitness: " + parent2.getFitness());
-        this.bestParents = new AI[]{parent1, parent2};
+        System.out.println("Best fitness: " + ai1.getFitness());
+        System.out.println("Average fitness: " + this.totalFitness / this.population.length);
     }
 
     public AI[] getNewPopulation() {
         AI[] newPopulation = new AI[Constants.POPULATION];
         for (int i = 0; i < newPopulation.length; i++) {
-            newPopulation[i] = this.crossover();
+            AI[] parents = this.selectParentsNew();
+            newPopulation[i] = this.crossover(parents);
         }
 
         return newPopulation;
     }
 
-    private AI crossover() {
+    private AI[] selectParentsNew() {
+        AI parent1 = this.selectParent();
+        AI parent2 = this.selectParent();
+        return new AI[]{parent1, parent2};
+    }
+
+    private AI selectParent() {
+        double rand = new Random().nextDouble(this.totalFitness);
+        double currentSum = 0;
+
+        for (AI ai : this.population) {
+            currentSum += ai.getFitness();
+            if (currentSum > rand) {
+                return ai;
+            }
+        }
+
+        // This will never actually be reached. It's here to please the compiler.
+        return this.population[0];
+    }
+
+    private AI crossover(AI[] parents) {
         double[][][] weights = new double[3][][];
         double[][] bias = new double[3][];
         for (int i = 0; i < weights.length; i++) {
-            int layerSize = this.bestParents[0].weights[i].length;
-            weights[i] = this.selectLayerWeights(i, layerSize);
+            int layerSize = parents[0].weights[i].length;
+            weights[i] = this.selectLayerWeights(parents, i, layerSize);
         }
 
         for (int i = 0; i < bias.length; i++) {
-            double[] newBias = new double[this.bestParents[0].bias[i].length];
+            double[] newBias = new double[parents[0].bias[i].length];
             Random rand = new Random();
             for (int j = 0; j < newBias.length; j++) {
                 if (rand.nextDouble() < Constants.CROSSOVER_RATE) {
                     this.crossoverParent = 1 - this.crossoverParent;
                 }
-                newBias[i] = this.bestParents[this.crossoverParent].bias[i][j];
+                newBias[i] = parents[this.crossoverParent].bias[i][j];
             }
             bias[i] = newBias;
         }
@@ -68,24 +87,24 @@ public class Generation {
         return new AI(weights, bias);
     }
 
-    private double[][] selectLayerWeights(int layer, int layerSize) {
+    private double[][] selectLayerWeights(AI[] parents, int layer, int layerSize) {
         double[][] layerWeights = new double[layerSize][];
         for (int i = 0; i < layerSize; i++) {
-            int neuronSize = this.bestParents[0].weights[layer][i].length;
-            layerWeights[i] = this.selectNeuronWeights(layer, i, neuronSize);
+            int neuronSize = parents[0].weights[layer][i].length;
+            layerWeights[i] = this.selectNeuronWeights(parents, layer, i, neuronSize);
         }
 
         return layerWeights;
     }
 
-    private double[] selectNeuronWeights(int layer, int neuron, int neuronSize) {
+    private double[] selectNeuronWeights(AI[] parents, int layer, int neuron, int neuronSize) {
         double[] neuronWeights = new double[neuronSize];
         for (int i = 0; i < neuronSize; i++) {
             Random rand = new Random();
             if (rand.nextDouble() < Constants.CROSSOVER_RATE) {
                 this.crossoverParent = 1 - this.crossoverParent;
             }
-            neuronWeights[i] = this.bestParents[this.crossoverParent].weights[layer][neuron][i];
+            neuronWeights[i] = parents[this.crossoverParent].weights[layer][neuron][i];
         }
 
         return neuronWeights;
