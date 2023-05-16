@@ -49,9 +49,18 @@ public class TrainingSimulator {
 
     public void endGeneration() {
         this.generationNum++;
+        this.setNewMutationRate();
         Generation generation = new Generation(this.population);
         this.population = generation.getNewPopulation();
         this.initializeSets();
+    }
+
+    private void setNewMutationRate() {
+        if (this.generationNum > 500 || this.generationNum % 10 != 0) {
+            return;
+        }
+
+        Constants.MUTATION_RATE -= Constants.MUTATION_RATE * 0.1;
     }
 
     public int getGeneration() {
