@@ -17,7 +17,11 @@ public class AI extends Player {
     private int losses;
 
     public AI() {
-        this(null, "Default AI", WeightsUtils.getRandomWeights(), WeightsUtils.getRandomBias());
+        this(WeightsUtils.getRandomWeights(), WeightsUtils.getRandomBias());
+    }
+
+    public AI(double[][][] weights, double[][] bias) {
+        this(null, "DefaultAI", weights, bias);
     }
 
     public AI(Game game, String name, double[][][] weights, double[][] bias) {

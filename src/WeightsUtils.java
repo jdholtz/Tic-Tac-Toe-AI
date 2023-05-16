@@ -38,4 +38,24 @@ public class WeightsUtils {
         return bias;
     }
 
+    public static double[][][] applyMutation(double[][][] weights) {
+        for (int i = 0; i < weights.length; i++) {
+            weights[i] = WeightsUtils.applyLayerMutation(weights[i]);
+        }
+
+        return weights;
+    }
+
+    public static double[][] applyLayerMutation(double[][] weights) {
+        for (int i = 0; i < weights.length; i++) {
+            for (int j = 0; j < weights[i].length; j++) {
+                Random rand = new Random();
+                if (rand.nextDouble() < Constants.MUTATION_RATE) {
+                    weights[i][j] = rand.nextDouble(-1, 1);
+                }
+            }
+        }
+
+        return weights;
+    }
 }

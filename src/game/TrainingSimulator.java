@@ -1,6 +1,7 @@
 package src.game;
 
 import src.Constants;
+import src.genetic_algorithm.Generation;
 import src.players.AI;
 import src.players.RandomPlayer;
 
@@ -8,31 +9,26 @@ public class TrainingSimulator {
     private int generationNum = 1;
     private boolean training;
     private final TrainingSet[] sets = new TrainingSet[Constants.POPULATION];
+    private AI[] population = new AI[Constants.POPULATION];
 
     public TrainingSimulator() {
+        this.initializePopulation();
         this.initializeSets();
         this.training = true;
     }
 
-    private void initializeSets() {
-        AI[] AIs = this.getNewPopulation();
-        this.initializeSets(AIs);
+    private void initializePopulation() {
+        for (int i = 0; i < this.population.length; i++) {
+            this.population[i] = new AI();
+        }
+
     }
 
-    private void initializeSets(AI[] population) {
+    private void initializeSets() {
         for (int i = 0; i < this.sets.length; i++) {
-            AI[] players = new AI[]{population[i], new RandomPlayer()};
+            AI[] players = new AI[]{this.population[i], new RandomPlayer()};
             this.sets[i] = new TrainingSet(players);
         }
-    }
-
-    private AI[] getNewPopulation() {
-        AI[] population = new AI[Constants.POPULATION];
-        for (int i = 0; i < population.length; i++) {
-            population[i] = new AI();
-        }
-
-        return population;
     }
 
     public void run() {
@@ -53,6 +49,8 @@ public class TrainingSimulator {
 
     public void endGeneration() {
         this.generationNum++;
+        Generation generation = new Generation(this.population);
+        this.population = generation.getNewPopulation();
         this.initializeSets();
     }
 
